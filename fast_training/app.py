@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 from fastapi import FastAPI
 
-from fast_training.schemas import Message
+from fast_training.schemas import UserSchema, Message
 
 app = FastAPI()
 
@@ -12,4 +12,7 @@ def read_root():
     return {'message': 'hello world'}
 
 
-# at57:49#1
+@app.post('/users/', status_code=HTTPStatus.CREATED, response_model=UserSchema)
+def create_user(user:UserSchema):
+    return user
+# at05:49#3
