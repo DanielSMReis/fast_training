@@ -54,5 +54,4 @@ def delete_user(user_id: int):
     return {'message': 'User Deleted'}
 
 
-# at1:17:30 #3
-# mhfch
+# at0000 #4
