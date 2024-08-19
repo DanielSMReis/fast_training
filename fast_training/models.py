@@ -18,6 +18,6 @@ class User:
         init=False, server_default=func.now()
     )
     # Exercicio solicitado
-    updated_at: Mapped[datetime] = mapped_column(
-        init=False, onupdate=func.now()
-    )
+ #   updated_at: Mapped[datetime] = mapped_column(
+ #       init=False, onupdate=func.now()
+ #   )
