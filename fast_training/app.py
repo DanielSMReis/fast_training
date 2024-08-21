@@ -42,9 +42,7 @@ def create_user(user: UserSchema, session: Session = Depends(get_session)):
 
 
 @app.get('/users/', response_model=UserList)
-def read_users(
-    skip: int = 0, limit: int = 100, session: Session = Depends(get_session)
-):
+def read_users(skip: int = 0, limit: int = 100, session: Session = Depends(get_session)):
     users = session.scalars(select(User).offset(skip).limit(limit)).all()
     return {'users': users}
 
@@ -76,7 +74,7 @@ def delete_user(user_id: int):
     return {'message': 'User Deleted'}
 
 
-# at4740 #5
+# at11827 #5
 # criar tabela upgrade_at como solicitado na aula 04
 
 

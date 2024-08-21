@@ -1,5 +1,7 @@
 from http import HTTPStatus
 
+from fast_training.schemas import UserPublic
+
 
 # Sempre que uma função de teste recebe o parametro client, ele executa esta funcao e retorna o
 # TestCliente(app) => vide arquivo de configuração "conftest.py"
@@ -30,7 +32,17 @@ def test_read_users(client):
     response = client.get('/users/')
 
     assert response.status_code == HTTPStatus.OK
-    assert response.json() == {'users': [{'username': 'testuser', 'id': 1, 'email': 'test@test.com'}]}
+    assert response.json() == {'users': []}
+
+
+def test_read_users_with_user(client, user):
+    # Convertendo o user criado no banco para um UserPublic do pydantic
+    user_schema = UserPublic.model_validate(user).model_dump()
+    response = client.get('/users/')
+
+    assert response.status_code == HTTPStatus.OK
+    assert response.json() == {'users': [user_schema]}  # para validar este teste fopi necessario importar nas models
+    # o método configdict
 
 
 def test_update_user(client):
