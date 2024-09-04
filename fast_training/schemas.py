@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, ConfigDict
+from pydantic import BaseModel, ConfigDict, EmailStr
 
 
 class Message(BaseModel):
@@ -21,6 +21,7 @@ class UserPublic(BaseModel):
     email: EmailStr
     # para facilitar a resonstrução dos modelos do pydantic durante os testes
     model_config = ConfigDict(from_attributes=True)
+
 
 class UserList(BaseModel):
     users: list[UserPublic]

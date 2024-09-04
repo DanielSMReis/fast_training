@@ -6,11 +6,10 @@ from sqlalchemy.orm import Session
 
 from fast_training.database import get_session
 from fast_training.models import User
-from fast_training.schemas import Message, UserDB, UserList, UserPublic, UserSchema
+from fast_training.schemas import Message, UserList, UserPublic, UserSchema
 
 app = FastAPI()
 
-database = []
 
 
 @app.get('/', status_code=HTTPStatus.OK, response_model=Message)
@@ -55,26 +54,34 @@ def read_one_user(user_id: int):
 
 
 @app.put('/users/{user_id}', response_model=UserPublic)
-def update_user(user_id: int, user: UserSchema):
-    if user_id > len(database) or user_id < 1:
+def update_user(user_id: int, user: UserSchema, session: Session = Depends(get_session)):
+    db_user = session.scalar(select(User).where(User.id == user_id))
+    if not db_user:
         raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail='User not Found')
-    user_wt_id = UserDB(**user.model_dump(), id=user_id)
-    database[user_id - 1] = user_wt_id
 
-    return user_wt_id
+    db_user.username = user.username
+    db_user.email = user.email
+    db_user.password = user.password
+    session.commit()
+    session.refresh(db_user)
+
+    return db_user
 
 
 @app.delete('/users/{user_id}', response_model=Message)
-def delete_user(user_id: int):
-    if user_id > len(database) or user_id < 1:
+def delete_user(user_id: int, session: Session = Depends(get_session)):
+    db_user = session.scalar(select(User).where(User.id == user_id))
+    if not db_user:
         raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail='User not Found')
 
-    del database[user_id - 1]
+    session.delete(db_user)
+    session.commit()
 
     return {'message': 'User Deleted'}
 
 
-# at11827 #5
+# at0000 #6
+# falta cobrir as linhas de teste de exercicio do arquivo app.py,
 # criar tabela upgrade_at como solicitado na aula 04
 
 

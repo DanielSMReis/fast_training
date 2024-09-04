@@ -45,8 +45,11 @@ def test_read_users_with_user(client, user):
     # o método configdict
 
 
-def test_update_user(client):
-    response = client.put('/users/1', json={'username': 'bob', 'email': 'bob@email.com', 'password': 'mypassword'})
+def test_update_user(client, user):
+    response = client.put(
+        '/users/1',
+        json={'username': 'bob', 'email': 'bob@email.com', 'password': 'mypassword'},
+    )
 
     assert response.status_code == HTTPStatus.OK
     assert response.json() == {
@@ -55,19 +58,16 @@ def test_update_user(client):
         'id': 1,
     }
 
-    response2 = client.put('/users/0', json={'username': 'bob', 'email': 'bob@email.com', 'password': 'mypassword'})
 
+def test_update_usr_not_found(client, user):
+    response2 = client.put(
+        '/users/9',
+        json={'username': 'bob', 'email': 'bob@email.com', 'password': 'mypassword'},
+    )
     assert response2.status_code == HTTPStatus.NOT_FOUND
 
 
-def test_read_one_user(client):
-    response = client.get('users/')
-
-    assert response.status_code == HTTPStatus.OK
-    assert response.json() == {'users': [{'email': 'bob@email.com', 'id': 1, 'username': 'bob'}]}
-
-
-def test_delete_user(client):
+def test_delete_user(client, user):
     response = client.delete('users/1')
 
     assert response.status_code == HTTPStatus.OK
