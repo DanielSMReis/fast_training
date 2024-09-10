@@ -12,6 +12,8 @@ sqlalchemy = "^2.0.32"
 pydantic-settings = "2.3.4"
 alembic = "^1.13.2"
 pyproject-toml = "^0.0.10"
+pyjwt = "^2.9.0"
+pwdlib = {extras = ["argon2"], version = "^0.2.1"}
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.5.1"
