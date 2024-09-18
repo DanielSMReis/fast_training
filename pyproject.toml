@@ -14,6 +14,8 @@ alembic = "^1.13.2"
 pyproject-toml = "^0.0.10"
 pyjwt = "^2.9.0"
 pwdlib = {extras = ["argon2"], version = "^0.2.1"}
+python-multipart = "^0.0.9"
+tzdata = "^2024.1"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.5.1"

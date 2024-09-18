@@ -7,6 +7,7 @@ from sqlalchemy.pool import StaticPool
 from fast_training.app import app
 from fast_training.database import get_session
 from fast_training.models import User, table_registry
+from fast_training.security import get_password_hash
 
 
 @pytest.fixture
@@ -44,7 +45,8 @@ def session():
 
 @pytest.fixture
 def user(session):
-    user = User(username='userTest', email='emailTest@Test.com', password='testPasswrd')
+    pwd = 'testPasswrd'
+    user = User(username='userTest', email='emailTest@Test.com', password=get_password_hash(pwd))
 
     session.add(user)
     session.commit()

@@ -25,3 +25,10 @@ class UserPublic(BaseModel):
 
 class UserList(BaseModel):
     users: list[UserPublic]
+
+
+
+#  Criado meramente para ter uma documentação acerca do Tonken
+class Token(BaseModel):
+    access_token: str
+    token_type: str
