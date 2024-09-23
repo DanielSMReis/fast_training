@@ -81,7 +81,7 @@ def test_delete_user(client, user):
 def test_get_token(client, user):
     response = client.post(
         '/token',
-        data={'username': user.username, 'password': user.password},
+        data={'username': user.username, 'password': user.clean_password},
     )
     token = response.json()
 

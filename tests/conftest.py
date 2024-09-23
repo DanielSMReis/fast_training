@@ -46,9 +46,16 @@ def session():
 @pytest.fixture
 def user(session):
     pwd = 'testPasswrd'
-    user = User(username='userTest', email='emailTest@Test.com', password=get_password_hash(pwd))
+    user = User(
+        username='userTest',
+        email='emailTest@Test.com',
+        password=get_password_hash(pwd),
+    )
 
     session.add(user)
     session.commit()
     session.refresh(user)
+    # Este atributo ainda nao existe no objeto, mas foi criado com o intuito de haver senha "limpa" salva para realização dos testes (Fix_error_400)
+    user.clean_password = 'testPasswrd'  # monkey Patch
+
     return user

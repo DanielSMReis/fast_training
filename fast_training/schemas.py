@@ -27,8 +27,12 @@ class UserList(BaseModel):
     users: list[UserPublic]
 
 
-
 #  Criado meramente para ter uma documentação acerca do Tonken
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+
+# Classe criada para tipificar o Token extraido JWT e garantir o campo username de identificação
+class TokenData(BaseModel):
+    username: str | None = None
