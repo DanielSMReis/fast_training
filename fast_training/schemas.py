@@ -28,6 +28,8 @@ class UserList(BaseModel):
 
 
 #  Criado meramente para ter uma documentação acerca do Tonken
+
+
 class Token(BaseModel):
     access_token: str
     token_type: str

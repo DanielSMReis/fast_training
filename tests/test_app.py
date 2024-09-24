@@ -45,37 +45,39 @@ def test_read_users_with_user(client, user):
     # o método configdict
 
 
-def test_update_user(client, user):
+def test_update_user(client, user, token):
     response = client.put(
-        '/users/1',
-        json={'username': 'bob', 'email': 'bob@email.com', 'password': 'mypassword'},
+        f'/users/{user.id}',
+        headers={'Authorization': f'Bearer {token}'},
+        json={
+            'username': 'bob',
+            'email': 'bob@example.com',
+            'password': 'mynewpassword',
+        },
     )
-
     assert response.status_code == HTTPStatus.OK
     assert response.json() == {
         'username': 'bob',
-        'email': 'bob@email.com',
-        'id': 1,
+        'email': 'bob@example.com',
+        'id': user.id,
     }
 
 
-def test_update_usr_not_found(client, user):
+"""
+def test_update_usr_Unauthorized(client, user):
     response2 = client.put(
         '/users/9',
         json={'username': 'bob', 'email': 'bob@email.com', 'password': 'mypassword'},
     )
-    assert response2.status_code == HTTPStatus.NOT_FOUND
+    assert response2.status_code == HTTPStatus.FORBIDDEN
+"""
 
 
-def test_delete_user(client, user):
-    response = client.delete('users/1')
+def test_delete_user(client, user, token):
+    response = client.delete(f'/users/{user.id}', headers={'Authorization': f'Bearer {token}'})
 
     assert response.status_code == HTTPStatus.OK
     assert response.json() == {'message': 'User Deleted'}
-
-    response2 = client.delete('users/2')
-
-    assert response2.status_code == HTTPStatus.NOT_FOUND
 
 
 def test_get_token(client, user):

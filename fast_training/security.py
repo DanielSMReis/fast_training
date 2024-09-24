@@ -13,7 +13,6 @@ from fast_training.database import get_session
 from fast_training.models import User
 from fast_training.schemas import TokenData
 
-
 SECRET_KEY = 'secret-key-will-change'
 ALGORITHM = 'HS256'
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
@@ -39,13 +38,13 @@ def verify_password(plain_password: str, hashed_password: str):
 
 
 def get_current_user(
-        session: Session = Depends(get_session),
-        token: str = Depends(oauth2_scheme),  # Injeta Oauth2 e garante que o token foi enviado
+    session: Session = Depends(get_session),
+    token: str = Depends(oauth2_scheme),  # Injeta Oauth2 e garante que o token foi enviado
 ):  # Diminuindo o leque de opções de erros que poderiam ocorrer, com a variavel credencials_exception
     credentials_exception = HTTPException(
         status_code=HTTPStatus.UNAUTHORIZED,
         detail='Credenciais nao validadas',
-        headers={'WWW-Autenticate': 'Barrier'},
+        headers={'WWW-Authenticate': 'Bearer'},
     )
 
     try:

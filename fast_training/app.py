@@ -62,7 +62,7 @@ def read_one_user(user_id: int):
 
 @app.put('/users/{user_id}', response_model=UserPublic)
 def update_user(user_id: int, user: UserSchema, session: Session = Depends(get_session), current_user: User = Depends(get_current_user)):
-    if current_user.id != user.id:
+    if current_user.id != user_id:
         raise HTTPException(status_code=HTTPStatus.FORBIDDEN, detail='Sem Permissao')
 
     current_user.username = user.username
@@ -105,6 +105,16 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), ses
 # criar tabela upgrade_at como solicitado na aula 04
 
 
+"""
+Exercicios aula 6:
+Faça um teste para cobrir o cenário que levanta exception credentials_exception na autenticação caso o User não seja encontrado. Ao olhar a cobertura
+de security.py você vai notar que esse contexto não está coberto.
+
+Reveja os testes criados até a aula 5 e veja se eles ainda fazem sentido (testes envolvendo 400)
+"""
+
+
+# ----------------------------------------
 """
 comandos basicos da sessao:
 
