@@ -1,3 +1,4 @@
+import factory
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -46,7 +47,21 @@ def session():
 @pytest.fixture
 def user(session):
     pwd = 'testPasswrd'
-    user = User(username='userTest', email='emailTest@Test.com', password=get_password_hash(pwd))
+    user = UserFactory(password=get_password_hash(pwd))
+
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+    # Este atributo ainda nao existe no objeto, mas foi criado com o intuito de haver senha "limpa" salva para realização dos testes (Fix_error_400)
+    user.clean_password = 'testPasswrd'  # monkey Patch
+
+    return user
+
+
+@pytest.fixture
+def other_user(session):
+    pwd = 'testPasswrd'
+    user = UserFactory(password=get_password_hash(pwd))
 
     session.add(user)
     session.commit()
@@ -64,3 +79,13 @@ def token(client, user):
         data={'username': user.username, 'password': user.clean_password},
     )
     return response.json()['access_token']
+
+
+# Criando n usuarios no banco
+class UserFactory(factory.Factory):
+    class Meta:
+        model = User
+
+    username = factory.Sequence(lambda n: f'test{n}')
+    email = factory.LazyAttribute(lambda obj: f'{obj.username}@test.com')
+    password = factory.LazyAttribute(lambda obj: f'{obj.username}@exemple.com')

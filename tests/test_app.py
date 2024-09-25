@@ -8,13 +8,3 @@ def test_root_deve_retornar_ok_e_ola_mundo(client):
 
     assert response.status_code == HTTPStatus.OK  # Assert
     assert response.json() == {'message': 'hello world'}  # Assert
-
-
-"""
-def test_update_usr_Unauthorized(client, user):
-    response2 = client.put(
-        '/users/9',
-        json={'username': 'bob', 'email': 'bob@email.com', 'password': 'mypassword'},
-    )
-    assert response2.status_code == HTTPStatus.FORBIDDEN
-"""

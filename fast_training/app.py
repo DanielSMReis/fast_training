@@ -16,7 +16,7 @@ def read_root():
     return {'message': 'hello world'}
 
 
-# a4829 #7
+# a2936 #8
 # falta cobrir as linhas de teste de exercicio do arquivo app.py,
 # criar tabela upgrade_at como solicitado na aula 04
 
@@ -32,6 +32,8 @@ Reveja os testes criados até a aula 5 e veja se eles ainda fazem sentido (teste
 
 # ----------------------------------------
 """
+poetry add --group dev "packege_name" | para instalar no ambiente de testes apenas
+
 comandos basicos da sessao:
 
 engine = create_engine(Settings().DATABASE_URL) -> cria o poll de conexoes
