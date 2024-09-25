@@ -1,16 +1,14 @@
 from http import HTTPStatus
 
-from fastapi import Depends, FastAPI, HTTPException
-from fastapi.security import OAuth2PasswordRequestForm
-from sqlalchemy import select
-from sqlalchemy.orm import Session
+from fastapi import FastAPI
 
-from fast_training.database import get_session
-from fast_training.models import User
-from fast_training.schemas import Message, Token
-from fast_training.security import create_access_token, verify_password
+from fast_training.routers import auth, users
+from fast_training.schemas import Message
 
 app = FastAPI()
+
+app.include_router(users.router)
+app.include_router(auth.router)
 
 
 @app.get('/', status_code=HTTPStatus.OK, response_model=Message)
@@ -18,22 +16,7 @@ def read_root():
     return {'message': 'hello world'}
 
 
-#  Criando rota para login do user
-@app.post('/token', response_model=Token)
-def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), session: Session = Depends(get_session)):
-    user = session.scalar(select(User).where(User.username == form_data.username))
-
-    if not user:
-        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail='Usuario ou Senha errados')
-    if not verify_password(form_data.password, user.password):
-        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail='Email ou Senha errados')
-
-    access_token = create_access_token(data={'sub': user.username})
-
-    return {'access_token': access_token, 'token_type': 'bearer'}
-
-
-# a1609 #7
+# a4829 #7
 # falta cobrir as linhas de teste de exercicio do arquivo app.py,
 # criar tabela upgrade_at como solicitado na aula 04
 
