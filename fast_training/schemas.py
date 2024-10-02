@@ -1,5 +1,7 @@
 from pydantic import BaseModel, ConfigDict, EmailStr
 
+from fast_training.models import TodosState
+
 
 class Message(BaseModel):
     message: str
@@ -38,3 +40,17 @@ class Token(BaseModel):
 # Classe criada para tipificar o Token extraido JWT e garantir o campo username de identificação
 class TokenData(BaseModel):
     username: str | None = None
+
+
+class TodoSchema(BaseModel):
+    title: str
+    description: str
+    state: TodosState
+
+
+class TodoPublic(TodoSchema):
+    id: int
+
+
+class TodoList(BaseModel):
+    todos: list[TodoPublic]

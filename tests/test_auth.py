@@ -51,7 +51,10 @@ def test_token_wrong_password(client, user):
 
 
 def test_refresh_token(client, user, token):
-    response = client.post('/auth/refresh_token', headers={'Authorization': f'bearer {token}'},)
+    response = client.post(
+        '/auth/refresh_token',
+        headers={'Authorization': f'bearer {token}'},
+    )
     data = response.json()
 
     assert response.status_code == HTTPStatus.OK
